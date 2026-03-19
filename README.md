@@ -2,7 +2,7 @@
 
 # Student Directory API
 
-[![CI](https://github.com/ethan/Ynov_CI_CD_TP1/actions/workflows/ci.yml/badge.svg)](https://github.com/ethan/Ynov_CI_CD_TP1/actions/workflows/ci.yml)
+[![CI](https://github.com/COMTETethan/Ynov_CI_CD_TP1/actions/workflows/ci.yml/badge.svg)](https://github.com/COMTETethan/Ynov_CI_CD_TP1/actions/workflows/ci.yml)
 
 Screenshot de la pipeline dans ./tp_rendue/*.png
 
