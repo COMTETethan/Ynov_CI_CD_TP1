@@ -11,14 +11,14 @@ beforeEach(() => {
 
 describe('GET /students', () => {
   it('should return 200 and an array', async () => {
-    const res = await client.get('/students');
+    const res = await client.students.$get();
     expect(res.status).toBe(200);
     const data = await res.json();
     expect(Array.isArray(data)).toBe(true);
   });
 
   it('should return all initial students', async () => {
-    const res = await client.get('/students');
+    const res = await client.students.$get();
     const data = await res.json();
     expect(data.length).toBe(5);
     expect(data[0].firstName).toBe('Alice');
@@ -27,7 +27,7 @@ describe('GET /students', () => {
 
 describe('GET /students/:id', () => {
   it('should return student for valid id', async () => {
-    const res = await client.get('/students/1');
+    const res = await client.students[':id'].$get({ param: { id: '1' } });
     expect(res.status).toBe(200);
     const data = await res.json();
     expect(data.id).toBe(1);
@@ -35,12 +35,12 @@ describe('GET /students/:id', () => {
   });
 
   it('should return 404 for non-existent id', async () => {
-    const res = await client.get('/students/999');
+    const res = await client.students[':id'].$get({ param: { id: '999' } });
     expect(res.status).toBe(404);
   });
 
   it('should return 400 for invalid id', async () => {
-    const res = await client.get('/students/abc');
+    const res = await client.students[':id'].$get({ param: { id: 'abc' } });
     expect(res.status).toBe(400);
   });
 });
@@ -54,7 +54,7 @@ describe('POST /students', () => {
       grade: 14.0,
       field: 'informatique',
     };
-    const res = await client.post('/students', { json: newStudent });
+    const res = await client.students.$post({ json: newStudent });
     expect(res.status).toBe(201);
     const data = await res.json();
     expect(data.id).toBe(6);
@@ -68,7 +68,7 @@ describe('POST /students', () => {
       email: 'john.doe@example.com',
       // missing grade and field
     };
-    const res = await client.post('/students', { json: invalidStudent });
+    const res = await client.students.$post({ json: invalidStudent });
     expect(res.status).toBe(400);
   });
 
@@ -80,7 +80,7 @@ describe('POST /students', () => {
       grade: 25,
       field: 'informatique',
     };
-    const res = await client.post('/students', { json: invalidStudent });
+    const res = await client.students.$post({ json: invalidStudent });
     expect(res.status).toBe(400);
   });
 
@@ -92,7 +92,7 @@ describe('POST /students', () => {
       grade: 10,
       field: 'mathématiques',
     };
-    const res = await client.post('/students', { json: duplicateStudent });
+    const res = await client.students.$post({ json: duplicateStudent });
     expect(res.status).toBe(409);
   });
 });
@@ -106,7 +106,7 @@ describe('PUT /students/:id', () => {
       grade: 16.0,
       field: 'informatique',
     };
-    const res = await client.put('/students/1', { json: updateData });
+    const res = await client.students[':id'].$put({ param: { id: '1' }, json: updateData });
     expect(res.status).toBe(200);
     const data = await res.json();
     expect(data.lastName).toBe('Updated');
@@ -120,26 +120,26 @@ describe('PUT /students/:id', () => {
       grade: 10,
       field: 'physique',
     };
-    const res = await client.put('/students/999', { json: updateData });
+    const res = await client.students[':id'].$put({ param: { id: '999' }, json: updateData });
     expect(res.status).toBe(404);
   });
 });
 
 describe('DELETE /students/:id', () => {
   it('should delete student for valid id', async () => {
-    const res = await client.delete('/students/1');
+    const res = await client.students[':id'].$delete({ param: { id: '1' } });
     expect(res.status).toBe(200);
   });
 
   it('should return 404 for non-existent id', async () => {
-    const res = await client.delete('/students/999');
+    const res = await client.students[':id'].$delete({ param: { id: '999' } });
     expect(res.status).toBe(404);
   });
 });
 
 describe('GET /students/stats', () => {
   it('should return statistics', async () => {
-    const res = await client.get('/students/stats');
+    const res = await client.students.stats.$get();
     expect(res.status).toBe(200);
     const data = await res.json();
     expect(data).toHaveProperty('totalStudents', 5);
@@ -151,7 +151,7 @@ describe('GET /students/stats', () => {
 
 describe('GET /students/search', () => {
   it('should return search results', async () => {
-    const res = await client.get('/students/search?q=Alice');
+    const res = await client.students.search.$get({ query: { q: 'Alice' } });
     expect(res.status).toBe(200);
     const data = await res.json();
     expect(data.length).toBe(1);
@@ -159,7 +159,7 @@ describe('GET /students/search', () => {
   });
 
   it('should return 400 for missing query', async () => {
-    const res = await client.get('/students/search');
+    const res = await client.students.search.$get();
     expect(res.status).toBe(400);
   });
 });

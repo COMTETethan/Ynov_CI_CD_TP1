@@ -4,8 +4,6 @@ import studentsRouter from './routes/students.js';
 
 const app = new Hono();
 
-app.route('/', studentsRouter);
-
 // Swagger UI
 app.get('/docs', swaggerUI({ url: '/openapi.json' }));
 
@@ -221,5 +219,7 @@ app.get('/openapi.json', (c) => {
     },
   });
 });
+
+app.route('/', studentsRouter);
 
 export default app;

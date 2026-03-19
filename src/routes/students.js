@@ -18,6 +18,22 @@ router.get('/students', (c) => {
   return c.json(students);
 });
 
+// GET /students/stats
+router.get('/students/stats', (c) => {
+  const stats = getStudentsStats();
+  return c.json(stats);
+});
+
+// GET /students/search?q=...
+router.get('/students/search', (c) => {
+  const q = c.req.query('q');
+  if (!q) {
+    return c.json({ error: 'Query parameter q is required' }, 400);
+  }
+  const results = searchStudents(q);
+  return c.json(results);
+});
+
 // GET /students/:id
 router.get('/students/:id', (c) => {
   const id = parseInt(c.req.param('id'));
