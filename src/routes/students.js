@@ -12,10 +12,37 @@ import {
 
 const router = new Hono();
 
-// GET /students
+// GET /students  (pagination + tri)
 router.get('/students', (c) => {
-  const students = getAllStudents();
-  return c.json(students);
+  let students = getAllStudents();
+
+  const page = parseInt(c.req.query('page'));
+  const limit = parseInt(c.req.query('limit'));
+
+  const safePage = isNaN(page) || page < 1 ? 1 : page;
+  const safeLimit = isNaN(limit) || limit < 0 ? students.length : limit;
+  const sort = c.req.query('sort');
+  const order = c.req.query('order') === 'desc' ? 'desc' : 'asc';
+
+  if (sort) {
+    students = students.sort((a, b) => {
+      if (a[sort] < b[sort]) return order === 'asc' ? -1 : 1;
+      if (a[sort] > b[sort]) return order === 'asc' ? 1 : -1;
+      return 0;
+    });
+  }
+
+  const start = (safePage - 1) * safeLimit;
+  const end = start + safeLimit;
+
+  const paginated = students.slice(start, end);
+
+  return c.json({
+    page: safePage,
+    limit: safeLimit,
+    total: students.length,
+    data: paginated,
+  });
 });
 
 // GET /students/stats

@@ -19,15 +19,49 @@ app.get('/openapi.json', (c) => {
     paths: {
       '/students': {
         get: {
-          summary: 'Get all students',
+          summary: 'Get all students (with pagination & sorting)',
+          parameters: [
+            {
+              name: 'page',
+              in: 'query',
+              schema: { type: 'integer', default: 1 },
+            },
+            {
+              name: 'limit',
+              in: 'query',
+              schema: { type: 'integer', default: 10 },
+            },
+            {
+              name: 'sort',
+              in: 'query',
+              schema: { type: 'string', example: 'grade' },
+            },
+            {
+              name: 'order',
+              in: 'query',
+              schema: {
+                type: 'string',
+                enum: ['asc', 'desc'],
+                default: 'asc',
+              },
+            },
+          ],
           responses: {
             200: {
-              description: 'List of students',
+              description: 'Paginated students',
               content: {
                 'application/json': {
                   schema: {
-                    type: 'array',
-                    items: { $ref: '#/components/schemas/Student' },
+                    type: 'object',
+                    properties: {
+                      page: { type: 'integer' },
+                      limit: { type: 'integer' },
+                      total: { type: 'integer' },
+                      data: {
+                        type: 'array',
+                        items: { $ref: '#/components/schemas/Student' },
+                      },
+                    },
                   },
                 },
               },
