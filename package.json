@@ -6,6 +6,7 @@
   "scripts": {
     "start": "node src/server.js",
     "test": "vitest",
+    "test:coverage": "vitest run --coverage",
     "lint": "eslint src tests"
   },
   "repository": {
@@ -30,6 +31,7 @@
     "zod": "^4.3.6"
   },
   "devDependencies": {
-    "@eslint/js": "^10.0.1"
+    "@eslint/js": "^10.0.1",
+    "@vitest/coverage-istanbul": "^4.1.0"
   }
 }
