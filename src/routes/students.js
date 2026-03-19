@@ -81,28 +81,34 @@ router.put('/students/:ine', async (c) => {
     return c.json({ error: 'Invalid INE' }, 400);
   }
   const body = await c.req.json();
-  const { firstName, lastName, email, grade, field } = body;
+  const updates = body;
 
-  if (!firstName || !lastName || !email || grade === undefined || !field) {
-    return c.json({ error: 'All fields are required' }, 400);
+  // Récupérer l'étudiant existant
+  const existingStudent = getAllStudents().find(s => s.ine === ine);
+  if (!existingStudent) {
+    return c.json({ error: 'Student not found' }, 404);
   }
 
+  // Merge ancien + nouveau
+  const merged = { ...existingStudent, ...updates };
+
   try {
-    studentSchema.parse({ ine, firstName, lastName, email, grade, field });
+    studentSchema.parse(merged);
   } catch (e) {
     return c.json({ error: 'Validation error', details: e.errors }, 400);
   }
 
-  // Check email unique except self
-  const existing = getAllStudents().find(s => s.email === email && s.ine !== ine);
-  if (existing) {
-    return c.json({ error: 'Email already exists' }, 409);
+  // Vérifier email unique (si modifié)
+  if (updates.email) {
+    const emailExists = getAllStudents().find(
+      s => s.email === updates.email && s.ine !== ine
+    );
+    if (emailExists) {
+      return c.json({ error: 'Email already exists' }, 409);
+    }
   }
 
-  const updated = updateStudent(ine, { firstName, lastName, email, grade, field });
-  if (!updated) {
-    return c.json({ error: 'Student not found' }, 404);
-  }
+  const updated = updateStudent(ine, updates);
   return c.json(updated);
 });
 
