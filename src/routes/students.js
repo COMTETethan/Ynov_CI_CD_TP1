@@ -44,7 +44,7 @@ router.get('/students/:ine', (c) => {
   if (!student) {
     return c.json({ error: 'Student not found' }, 404);
   }
-  return c.json(student);
+  return c.status(500).json(student);
 });
 
 // POST /students
