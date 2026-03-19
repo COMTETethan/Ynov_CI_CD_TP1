@@ -4,6 +4,8 @@
 
 [![CI](https://github.com/ethan/Ynov_CI_CD_TP1/actions/workflows/ci.yml/badge.svg)](https://github.com/ethan/Ynov_CI_CD_TP1/actions/workflows/ci.yml)
 
+Screenshot de la pipeline dans ./tp_rendue/*.png
+
 ### Run the server
 
 ```bash
@@ -26,4 +28,11 @@ npm run lint
 
 ```bash
 npm run test:coverage
+```
+
+## Swagger
+
+Lancez le serveur puis rendez-vous sur l'url :
+```bash
+http://localhost:3000/docs
 ```
