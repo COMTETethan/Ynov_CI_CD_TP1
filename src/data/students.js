@@ -1,5 +1,3 @@
-const { z } = require('zod'); // wait, since module, import
-
 // Since ES module, use import
 
 // But for simplicity, define schema with zod.
