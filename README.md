@@ -1,30 +1,23 @@
 # Readme
 
-## Manual API Verification
+# Student Directory API
 
-A helper script is provided to run a set of manual API checks using `curl`.
+[![CI](https://github.com/ethan/Ynov_CI_CD_TP1/actions/workflows/ci.yml/badge.svg)](https://github.com/ethan/Ynov_CI_CD_TP1/actions/workflows/ci.yml)
 
 ### Run the server
 
 ```bash
-npm start
+npm run start
 ```
 
-### Run the verification script
+### Run Vitest
 
 ```bash
-bash tp_rendue/test_api.sh
+npm run test
 ```
 
-This script performs the following checks:
+### Run ESlint
 
-- ✅ `GET /students` returns the list
-- ✅ `GET /students/INE00000001` returns a student
-- ✅ `GET /students/INE99999999` returns 404
-- ✅ `POST /students` with valid data returns 201
-- ✅ `POST /students` without email returns 400
-- ✅ `POST /students` with an existing email returns 409
-- ✅ `PUT /students/INE00000001` updates a student
-- ✅ `DELETE /students/INE00000001` deletes the student
-- ✅ `GET /students/stats` returns statistics
-- ✅ `GET /students/search?q=ahmed` returns results
+```bash
+npm run lint
+```
