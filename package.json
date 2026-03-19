@@ -1,0 +1,32 @@
+{
+  "name": "ci_cd",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "test": "vitest",
+    "lint": "eslint src tests"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/COMTETethan/Ynov_CI_CD_TP1.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/COMTETethan/Ynov_CI_CD_TP1/issues"
+  },
+  "homepage": "https://github.com/COMTETethan/Ynov_CI_CD_TP1#readme",
+  "dependencies": {
+    "@hono/node-server": "^1.19.11",
+    "@hono/swagger-ui": "^0.6.1",
+    "eslint": "^10.0.3",
+    "hono": "^4.12.8",
+    "supertest": "^7.2.2",
+    "vitest": "^4.1.0",
+    "zod": "^4.3.6"
+  }
+}
