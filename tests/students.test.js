@@ -112,6 +112,17 @@ describe('PUT /students/:ine', () => {
     expect(data.lastName).toBe('Updated');
   });
 
+  it('should allow updating other fields without changing email', async () => {
+    const updateData = {
+      lastName: 'UpdatedAgain',
+    };
+    const res = await client.students[':ine'].$put({ param: { ine: 'INE00000001' }, json: updateData });
+    expect(res.status).toBe(200);
+    const data = await res.json();
+    expect(data.lastName).toBe('UpdatedAgain');
+    expect(data.email).toBe('alice.dupont@example.com');
+  });
+
   it('should return 404 for non-existent INE', async () => {
     const updateData = {
       firstName: 'Test',
