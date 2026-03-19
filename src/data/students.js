@@ -1,21 +1,37 @@
-// Since ES module, use import
-
-// But for simplicity, define schema with zod.
-
 import { z } from 'zod';
 
 const studentSchema = z.object({
-  id: z.number().int().positive(),
+  ine: z.string().length(11),
   firstName: z.string().min(2),
   lastName: z.string().min(2),
-  email: z.string().email(),
+  email: z.email(),
   grade: z.number().min(0).max(20),
-  field: z.enum(['informatique', 'mathématiques', 'physique', 'chimie']),
+  field: z.enum([
+    'informatique',
+    'mathématiques',
+    'physique',
+    'chimie',
+    'français',
+    'sport',
+    'histoire',
+    'géographie',
+    'philosophie',
+    'économie',
+    'biologie',
+    'musique',
+    'arts-plastiques',
+  ]),
 });
+
+function formatIne(number) {
+  return `INE${String(number).padStart(8, '0')}`;
+}
+
+let nextIne = 21;
 
 let students = [
   {
-    id: 1,
+    ine: 'INE00000001',
     firstName: 'Alice',
     lastName: 'Dupont',
     email: 'alice.dupont@example.com',
@@ -23,7 +39,7 @@ let students = [
     field: 'informatique',
   },
   {
-    id: 2,
+    ine: 'INE00000002',
     firstName: 'Bob',
     lastName: 'Martin',
     email: 'bob.martin@example.com',
@@ -31,7 +47,7 @@ let students = [
     field: 'mathématiques',
   },
   {
-    id: 3,
+    ine: 'INE00000003',
     firstName: 'Charlie',
     lastName: 'Durand',
     email: 'charlie.durand@example.com',
@@ -39,7 +55,7 @@ let students = [
     field: 'physique',
   },
   {
-    id: 4,
+    ine: 'INE00000004',
     firstName: 'Diana',
     lastName: 'Leroy',
     email: 'diana.leroy@example.com',
@@ -47,21 +63,139 @@ let students = [
     field: 'chimie',
   },
   {
-    id: 5,
+    ine: 'INE00000005',
     firstName: 'Eve',
     lastName: 'Moreau',
     email: 'eve.moreau@example.com',
     grade: 16.8,
     field: 'informatique',
   },
+  {
+    ine: 'INE00000006',
+    firstName: 'François',
+    lastName: 'Petit',
+    email: 'francois.petit@example.com',
+    grade: 13.4,
+    field: 'français',
+  },
+  {
+    ine: 'INE00000007',
+    firstName: 'Gisèle',
+    lastName: 'Robert',
+    email: 'gisele.robert@example.com',
+    grade: 14.7,
+    field: 'histoire',
+  },
+  {
+    ine: 'INE00000008',
+    firstName: 'Hugo',
+    lastName: 'Lambert',
+    email: 'hugo.lambert@example.com',
+    grade: 11.9,
+    field: 'géographie',
+  },
+  {
+    ine: 'INE00000009',
+    firstName: 'Isabelle',
+    lastName: 'Rousseau',
+    email: 'isabelle.rousseau@example.com',
+    grade: 17.2,
+    field: 'philosophie',
+  },
+  {
+    ine: 'INE00000010',
+    firstName: 'Julien',
+    lastName: 'Mercier',
+    email: 'julien.mercier@example.com',
+    grade: 14.1,
+    field: 'économie',
+  },
+  {
+    ine: 'INE00000011',
+    firstName: 'Karine',
+    lastName: 'Faure',
+    email: 'karine.faure@example.com',
+    grade: 15.0,
+    field: 'biologie',
+  },
+  {
+    ine: 'INE00000012',
+    firstName: 'Laurent',
+    lastName: 'Morel',
+    email: 'laurent.morel@example.com',
+    grade: 12.8,
+    field: 'musique',
+  },
+  {
+    ine: 'INE00000013',
+    firstName: 'Mélanie',
+    lastName: 'Durant',
+    email: 'melanie.durant@example.com',
+    grade: 16.3,
+    field: 'arts-plastiques',
+  },
+  {
+    ine: 'INE00000014',
+    firstName: 'Nicolas',
+    lastName: 'Perrin',
+    email: 'nicolas.perrin@example.com',
+    grade: 13.9,
+    field: 'sport',
+  },
+  {
+    ine: 'INE00000015',
+    firstName: 'Océane',
+    lastName: 'Lemaire',
+    email: 'oceane.lemaire@example.com',
+    grade: 14.6,
+    field: 'mathématiques',
+  },
+  {
+    ine: 'INE00000016',
+    firstName: 'Paul',
+    lastName: 'Renaud',
+    email: 'paul.renaud@example.com',
+    grade: 11.7,
+    field: 'physique',
+  },
+  {
+    ine: 'INE00000017',
+    firstName: 'Quentin',
+    lastName: 'Garnier',
+    email: 'quentin.garnier@example.com',
+    grade: 17.5,
+    field: 'chimie',
+  },
+  {
+    ine: 'INE00000018',
+    firstName: 'Romain',
+    lastName: 'Blanc',
+    email: 'romain.blanc@example.com',
+    grade: 13.2,
+    field: 'informatique',
+  },
+  {
+    ine: 'INE00000019',
+    firstName: 'Sophie',
+    lastName: 'Bouchet',
+    email: 'sophie.bouchet@example.com',
+    grade: 15.9,
+    field: 'économie',
+  },
+  {
+    ine: 'INE00000020',
+    firstName: 'Théo',
+    lastName: 'Cardinal',
+    email: 'theo.cardinal@example.com',
+    grade: 12.3,
+    field: 'biologie',
+  },
 ];
-
-let nextId = 6;
 
 export function resetStudents() {
   students = [
     {
-      id: 1,
+      ine: 'INE00000001',
       firstName: 'Alice',
       lastName: 'Dupont',
       email: 'alice.dupont@example.com',
@@ -69,7 +203,7 @@ export function resetStudents() {
       field: 'informatique',
     },
     {
-      id: 2,
+      ine: 'INE00000002',
       firstName: 'Bob',
       lastName: 'Martin',
       email: 'bob.martin@example.com',
@@ -77,7 +211,7 @@ export function resetStudents() {
       field: 'mathématiques',
     },
     {
-      id: 3,
+      ine: 'INE00000003',
       firstName: 'Charlie',
       lastName: 'Durand',
       email: 'charlie.durand@example.com',
@@ -85,7 +219,7 @@ export function resetStudents() {
       field: 'physique',
     },
     {
-      id: 4,
+      ine: 'INE00000004',
       firstName: 'Diana',
       lastName: 'Leroy',
       email: 'diana.leroy@example.com',
@@ -93,40 +227,160 @@ export function resetStudents() {
       field: 'chimie',
     },
     {
-      id: 5,
+      ine: 'INE00000005',
       firstName: 'Eve',
       lastName: 'Moreau',
       email: 'eve.moreau@example.com',
       grade: 16.8,
       field: 'informatique',
     },
+    {
+      ine: 'INE00000006',
+      firstName: 'François',
+      lastName: 'Petit',
+      email: 'francois.petit@example.com',
+      grade: 13.4,
+      field: 'français',
+    },
+    {
+      ine: 'INE00000007',
+      firstName: 'Gisèle',
+      lastName: 'Robert',
+      email: 'gisele.robert@example.com',
+      grade: 14.7,
+      field: 'histoire',
+    },
+    {
+      ine: 'INE00000008',
+      firstName: 'Hugo',
+      lastName: 'Lambert',
+      email: 'hugo.lambert@example.com',
+      grade: 11.9,
+      field: 'géographie',
+    },
+    {
+      ine: 'INE00000009',
+      firstName: 'Isabelle',
+      lastName: 'Rousseau',
+      email: 'isabelle.rousseau@example.com',
+      grade: 17.2,
+      field: 'philosophie',
+    },
+    {
+      ine: 'INE00000010',
+      firstName: 'Julien',
+      lastName: 'Mercier',
+      email: 'julien.mercier@example.com',
+      grade: 14.1,
+      field: 'économie',
+    },
+    {
+      ine: 'INE00000011',
+      firstName: 'Karine',
+      lastName: 'Faure',
+      email: 'karine.faure@example.com',
+      grade: 15.0,
+      field: 'biologie',
+    },
+    {
+      ine: 'INE00000012',
+      firstName: 'Laurent',
+      lastName: 'Morel',
+      email: 'laurent.morel@example.com',
+      grade: 12.8,
+      field: 'musique',
+    },
+    {
+      ine: 'INE00000013',
+      firstName: 'Mélanie',
+      lastName: 'Durant',
+      email: 'melanie.durant@example.com',
+      grade: 16.3,
+      field: 'arts-plastiques',
+    },
+    {
+      ine: 'INE00000014',
+      firstName: 'Nicolas',
+      lastName: 'Perrin',
+      email: 'nicolas.perrin@example.com',
+      grade: 13.9,
+      field: 'sport',
+    },
+    {
+      ine: 'INE00000015',
+      firstName: 'Océane',
+      lastName: 'Lemaire',
+      email: 'oceane.lemaire@example.com',
+      grade: 14.6,
+      field: 'mathématiques',
+    },
+    {
+      ine: 'INE00000016',
+      firstName: 'Paul',
+      lastName: 'Renaud',
+      email: 'paul.renaud@example.com',
+      grade: 11.7,
+      field: 'physique',
+    },
+    {
+      ine: 'INE00000017',
+      firstName: 'Quentin',
+      lastName: 'Garnier',
+      email: 'quentin.garnier@example.com',
+      grade: 17.5,
+      field: 'chimie',
+    },
+    {
+      ine: 'INE00000018',
+      firstName: 'Romain',
+      lastName: 'Blanc',
+      email: 'romain.blanc@example.com',
+      grade: 13.2,
+      field: 'informatique',
+    },
+    {
+      ine: 'INE00000019',
+      firstName: 'Sophie',
+      lastName: 'Bouchet',
+      email: 'sophie.bouchet@example.com',
+      grade: 15.9,
+      field: 'économie',
+    },
+    {
+      ine: 'INE00000020',
+      firstName: 'Théo',
+      lastName: 'Cardinal',
+      email: 'theo.cardinal@example.com',
+      grade: 12.3,
+      field: 'biologie',
+    },
   ];
-  nextId = 6;
+  nextIne = 21;
 }
 
 export function getAllStudents() {
   return students;
 }
 
-export function getStudentById(id) {
-  return students.find(s => s.id === id);
+export function getStudentById(ine) {
+  return students.find(s => s.ine === ine);
 }
 
 export function addStudent(studentData) {
-  const newStudent = { ...studentData, id: nextId++ };
+  const newStudent = { ...studentData, ine: formatIne(nextIne++) };
   students.push(newStudent);
   return newStudent;
 }
 
-export function updateStudent(id, updateData) {
-  const index = students.findIndex(s => s.id === id);
+export function updateStudent(ine, updateData) {
+  const index = students.findIndex(s => s.ine === ine);
   if (index === -1) return null;
   students[index] = { ...students[index], ...updateData };
   return students[index];
 }
 
-export function deleteStudent(id) {
-  const index = students.findIndex(s => s.id === id);
+export function deleteStudent(ine) {
+  const index = students.findIndex(s => s.ine === ine);
   if (index === -1) return false;
   students.splice(index, 1);
   return true;

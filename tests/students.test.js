@@ -20,27 +20,27 @@ describe('GET /students', () => {
   it('should return all initial students', async () => {
     const res = await client.students.$get();
     const data = await res.json();
-    expect(data.length).toBe(5);
+    expect(data.length).toBe(20);
     expect(data[0].firstName).toBe('Alice');
   });
 });
 
-describe('GET /students/:id', () => {
-  it('should return student for valid id', async () => {
-    const res = await client.students[':id'].$get({ param: { id: '1' } });
+describe('GET /students/:ine', () => {
+  it('should return student for valid INE', async () => {
+    const res = await client.students[':ine'].$get({ param: { ine: 'INE00000001' } });
     expect(res.status).toBe(200);
     const data = await res.json();
-    expect(data.id).toBe(1);
+    expect(data.ine).toBe('INE00000001');
     expect(data.firstName).toBe('Alice');
   });
 
-  it('should return 404 for non-existent id', async () => {
-    const res = await client.students[':id'].$get({ param: { id: '999' } });
+  it('should return 404 for non-existent INE', async () => {
+    const res = await client.students[':ine'].$get({ param: { ine: 'INE99999999' } });
     expect(res.status).toBe(404);
   });
 
-  it('should return 400 for invalid id', async () => {
-    const res = await client.students[':id'].$get({ param: { id: 'abc' } });
+  it('should return 400 for invalid INE', async () => {
+    const res = await client.students[':ine'].$get({ param: { ine: 'abc' } });
     expect(res.status).toBe(400);
   });
 });
@@ -57,7 +57,7 @@ describe('POST /students', () => {
     const res = await client.students.$post({ json: newStudent });
     expect(res.status).toBe(201);
     const data = await res.json();
-    expect(data.id).toBe(6);
+    expect(data.ine).toBe('INE00000021');
     expect(data.firstName).toBe('John');
   });
 
@@ -97,7 +97,7 @@ describe('POST /students', () => {
   });
 });
 
-describe('PUT /students/:id', () => {
+describe('PUT /students/:ine', () => {
   it('should update student with valid data', async () => {
     const updateData = {
       firstName: 'Alice',
@@ -106,13 +106,13 @@ describe('PUT /students/:id', () => {
       grade: 16.0,
       field: 'informatique',
     };
-    const res = await client.students[':id'].$put({ param: { id: '1' }, json: updateData });
+    const res = await client.students[':ine'].$put({ param: { ine: 'INE00000001' }, json: updateData });
     expect(res.status).toBe(200);
     const data = await res.json();
     expect(data.lastName).toBe('Updated');
   });
 
-  it('should return 404 for non-existent id', async () => {
+  it('should return 404 for non-existent INE', async () => {
     const updateData = {
       firstName: 'Test',
       lastName: 'Test',
@@ -120,19 +120,19 @@ describe('PUT /students/:id', () => {
       grade: 10,
       field: 'physique',
     };
-    const res = await client.students[':id'].$put({ param: { id: '999' }, json: updateData });
+    const res = await client.students[':ine'].$put({ param: { ine: 'INE99999999' }, json: updateData });
     expect(res.status).toBe(404);
   });
 });
 
-describe('DELETE /students/:id', () => {
-  it('should delete student for valid id', async () => {
-    const res = await client.students[':id'].$delete({ param: { id: '1' } });
+describe('DELETE /students/:ine', () => {
+  it('should delete student for valid INE', async () => {
+    const res = await client.students[':ine'].$delete({ param: { ine: 'INE00000001' } });
     expect(res.status).toBe(200);
   });
 
-  it('should return 404 for non-existent id', async () => {
-    const res = await client.students[':id'].$delete({ param: { id: '999' } });
+  it('should return 404 for non-existent INE', async () => {
+    const res = await client.students[':ine'].$delete({ param: { ine: 'INE99999999' } });
     expect(res.status).toBe(404);
   });
 });
@@ -142,7 +142,7 @@ describe('GET /students/stats', () => {
     const res = await client.students.stats.$get();
     expect(res.status).toBe(200);
     const data = await res.json();
-    expect(data).toHaveProperty('totalStudents', 5);
+    expect(data).toHaveProperty('totalStudents', 20);
     expect(data).toHaveProperty('averageGrade');
     expect(data).toHaveProperty('studentsByField');
     expect(data).toHaveProperty('bestStudent');

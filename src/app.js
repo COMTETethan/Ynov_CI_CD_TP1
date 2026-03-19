@@ -58,15 +58,15 @@ app.get('/openapi.json', (c) => {
           },
         },
       },
-      '/students/{id}': {
+      '/students/{ine}': {
         get: {
-          summary: 'Get student by ID',
+          summary: 'Get student by INE',
           parameters: [
             {
-              name: 'id',
+              name: 'ine',
               in: 'path',
               required: true,
-              schema: { type: 'integer' },
+              schema: { type: 'string', pattern: '^INE\\d{8}$' },
             },
           ],
           responses: {
@@ -78,7 +78,7 @@ app.get('/openapi.json', (c) => {
                 },
               },
             },
-            400: { description: 'Invalid ID' },
+            400: { description: 'Invalid INE' },
             404: { description: 'Student not found' },
           },
         },
@@ -86,10 +86,10 @@ app.get('/openapi.json', (c) => {
           summary: 'Update student',
           parameters: [
             {
-              name: 'id',
+              name: 'ine',
               in: 'path',
               required: true,
-              schema: { type: 'integer' },
+              schema: { type: 'string', pattern: '^INE\\d{8}$' },
             },
           ],
           requestBody: {
@@ -118,10 +118,10 @@ app.get('/openapi.json', (c) => {
           summary: 'Delete student',
           parameters: [
             {
-              name: 'id',
+              name: 'ine',
               in: 'path',
               required: true,
-              schema: { type: 'integer' },
+              schema: { type: 'string', pattern: '^INE\\d{8}$' },
             },
           ],
           responses: {
@@ -178,7 +178,11 @@ app.get('/openapi.json', (c) => {
         Student: {
           type: 'object',
           properties: {
-            id: { type: 'integer' },
+            ine: {
+              type: 'string',
+              description: 'Identifiant National Étudiant (INE)',
+              example: 'INE00000001',
+            },
             firstName: { type: 'string' },
             lastName: { type: 'string' },
             email: { type: 'string', format: 'email' },
