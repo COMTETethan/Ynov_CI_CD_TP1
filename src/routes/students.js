@@ -44,7 +44,7 @@ router.get('/students/:ine', (c) => {
   if (!student) {
     return c.json({ error: 'Student not found' }, 404);
   }
-  return c.status(500).json(student);
+  return c.json(student);
 });
 
 // POST /students
@@ -76,46 +76,33 @@ router.post('/students', async (c) => {
 
 // PUT /students/:ine
 router.put('/students/:ine', async (c) => {
-  const ineRaw = c.req.param('ine');
-  const ine = ineRaw?.toUpperCase();
+  const ine = c.req.param('ine');
   if (!ine || !/^INE\d{8}$/.test(ine)) {
     return c.json({ error: 'Invalid INE' }, 400);
   }
-
-  const existingStudent = getStudentById(ine);
-  if (!existingStudent) {
-    return c.json({ error: 'Student not found' }, 404);
-  }
-
   const body = await c.req.json();
   const { firstName, lastName, email, grade, field } = body;
 
-  // Build updated data allowing partial updates (PUT behaves like PATCH here)
-  const updateData = {
-    ...existingStudent,
-    ...(firstName !== undefined ? { firstName } : {}),
-    ...(lastName !== undefined ? { lastName } : {}),
-    ...(email !== undefined ? { email } : {}),
-    ...(grade !== undefined ? { grade } : {}),
-    ...(field !== undefined ? { field } : {}),
-  };
+  if (!firstName || !lastName || !email || grade === undefined || !field) {
+    return c.json({ error: 'All fields are required' }, 400);
+  }
 
   try {
-    studentSchema.parse(updateData);
+    studentSchema.parse({ ine, firstName, lastName, email, grade, field });
   } catch (e) {
     return c.json({ error: 'Validation error', details: e.errors }, 400);
   }
 
-  // Check email unique except self (case-insensitive)
-  const normalizedEmail = String(updateData.email).trim().toLowerCase();
-  const existing = getAllStudents().find(
-    (s) => s.ine !== ine && String(s.email).trim().toLowerCase() === normalizedEmail
-  );
+  // Check email unique except self
+  const existing = getAllStudents().find(s => s.email === email && s.ine !== ine);
   if (existing) {
     return c.json({ error: 'Email already exists' }, 409);
   }
 
-  const updated = updateStudent(ine, updateData);
+  const updated = updateStudent(ine, { firstName, lastName, email, grade, field });
+  if (!updated) {
+    return c.json({ error: 'Student not found' }, 404);
+  }
   return c.json(updated);
 });
 
