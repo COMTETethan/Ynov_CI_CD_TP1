@@ -21,3 +21,9 @@ npm run test
 ```bash
 npm run lint
 ```
+
+### Run tests coverage
+
+```bash
+npm run test:coverage
+```
